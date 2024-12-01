@@ -1,1 +1,55 @@
-﻿<p1>Clients list</p1>
+﻿@model List<Client>
+<div class="container">
+	<div class="row pt-4">
+		<div class="col-6">
+			<h1 class="text-primary">Clients list</h1>
+		</div>
+		<div class="col-6 text-end">
+			<a asp-controller="" asp-action="" class="btn btn-primary">
+				Create New Client
+			</a>
+		</div>
+	</div>
+</div>
+
+<table class="table table-bordered table-striped">
+	<tr>
+		<th>
+			Client Name
+		</th>
+		<th>
+			Client Surname
+		</th>
+		<th>
+			Client Email
+		</th>
+		<th>
+			Client Phone
+		</th>
+		<th>
+			Client Address
+		</th>
+	</tr>
+	<tbody>
+		@foreach(var obj in Model){
+			<tr>
+				<td>
+					@obj.Name
+				</td>
+				<td>
+					@obj.Surname
+				</td>
+				<td>
+					@obj.Email
+				</td>
+				<td>
+					@obj.Phone
+				</td>
+				<td>
+					@obj.Address
+				</td>
+			</tr>
+		}
+
+	</tbody>
+</table>
