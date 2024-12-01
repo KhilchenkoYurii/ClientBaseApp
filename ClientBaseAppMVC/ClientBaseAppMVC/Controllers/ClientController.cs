@@ -65,5 +65,38 @@ namespace ClientBaseAppMVC.Controllers
             }
             return RedirectToAction("Index");
         }
+        public IActionResult Delete(string? id)
+        {
+            if (id == null || id == "")
+            {
+                return NotFound();
+            }
+
+            Client clientFromDb = _context.Clients.AsQueryable().Where(element => element.Id == id).FirstOrDefault();
+            if (clientFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(clientFromDb);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(string? id)
+        {
+            if(id == null || id == "")
+            {
+                return NotFound();
+            }
+            Client clientFromDb = _context.Clients.AsQueryable().Where(element => element.Id == id).FirstOrDefault();
+            
+            if (clientFromDb == null)
+            {
+                return NotFound();
+            }
+            IMongoCollection<Client> mongoCollection = _context.Clients;
+            var filter = Builders<Client>.Filter.Eq(element=>element.Id, id);
+            mongoCollection.DeleteOne(item=>item.Id == id);
+            return RedirectToAction("Index");
+        }
     }
 }
