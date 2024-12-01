@@ -1,4 +1,5 @@
 
+using ClientBaseAppMVC.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(
         CertificateAuthenticationDefaults.AuthenticationScheme)
         .AddCertificate();
+builder.Services.Configure<ClientsDatabaseSettings>(
+    builder.Configuration.GetSection("ClientDatabase"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
