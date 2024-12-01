@@ -14,7 +14,7 @@ namespace ClientBaseAppMVC.Data
             _database = client.GetDatabase(settings.Value.DatabaseName);
         }
 
-        public List<Client> Clients =>
-            _database.GetCollection<Client>("Clients").AsQueryable<Client>().ToList<Client>();
+        public IMongoCollection<Client> Clients =>
+            _database.GetCollection<Client>("Clients");
     }
 }

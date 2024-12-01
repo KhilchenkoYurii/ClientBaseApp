@@ -19,9 +19,21 @@ namespace ClientBaseAppMVC.Controllers
 
         public IActionResult Index()
         {
-            List<Client> objList = _context.Clients;
+            List<Client> objList = _context.Clients.AsQueryable<Client>().ToList<Client>();
 
             return View(objList);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Client obj)
+        {
+            IMongoCollection<Client> mongoCollection = _context.Clients;
+            mongoCollection.InsertOne(obj);
+            return RedirectToAction("Index");
         }
     }
 }
