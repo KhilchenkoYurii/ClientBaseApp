@@ -31,8 +31,38 @@ namespace ClientBaseAppMVC.Controllers
         [HttpPost]
         public IActionResult Create(Client obj)
         {
-            IMongoCollection<Client> mongoCollection = _context.Clients;
-            mongoCollection.InsertOne(obj);
+            if (ModelState.IsValid)
+            {
+                IMongoCollection<Client> mongoCollection = _context.Clients;
+                mongoCollection.InsertOne(obj);
+            }
+                return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(string? id)
+        {
+            if(id == null || id == "")
+            {
+                return NotFound();
+            }
+
+            Client clientFromDb = _context.Clients.AsQueryable().Where(element=>element.Id==id).FirstOrDefault();
+            if (clientFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(clientFromDb);
+        }
+        [HttpPost]
+        public IActionResult Edit(Client obj)
+        {
+            if (ModelState.IsValid)
+            {
+                IMongoCollection<Client> mongoCollection = _context.Clients;
+                var filter = Builders<Client>.Filter.Eq(element=>element.Id, obj.Id);
+                mongoCollection.ReplaceOne(filter, obj);
+            }
             return RedirectToAction("Index");
         }
     }
